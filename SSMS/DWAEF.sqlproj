@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>DWAEF</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{0c01b74c-061e-4bb1-a443-cb3a3da2100b}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>SSMS</RootNamespace>
+    <AssemblyName>SSMS</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
+    <Recovery>SIMPLE</Recovery>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Database Triggers" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Functions" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\User Defined Types" />
+    <Folder Include="meta" />
+    <Folder Include="meta\Functions" />
+    <Folder Include="meta\Stored Procedures" />
+    <Folder Include="meta\Views" />
+    <Folder Include="SSIS" />
+    <Folder Include="SSIS\Stored Procedures" />
+    <Folder Include="PreDeployment" />
+    <Folder Include="PreDeployment\Schemas" />
+    <Folder Include="PreDeployment\Triggers" />
+    <Folder Include="SchemaCompare" />
+    <Folder Include="bin" />
+    <Folder Include="bin\Debug" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="Environment">
+      <DefaultValue>DEV</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Database Triggers\ChangeLog.sql" />
+    <Build Include="Database Triggers\TableTracking.sql" />
+    <Build Include="Database Triggers\ViewTracking.sql" />
+    <Build Include="dbo\Functions\fnCheckSchedule.sql" />
+    <Build Include="dbo\Functions\fnConvertUtcToCet.sql" />
+    <Build Include="dbo\Functions\fnGenerateKey.sql" />
+    <Build Include="dbo\Functions\fnGenerateLabel.sql" />
+    <Build Include="dbo\Functions\fnGetProperCase.sql" />
+    <Build Include="dbo\Functions\fnSingularize.sql" />
+    <Build Include="dbo\Functions\fnSplit.sql" />
+    <Build Include="dbo\Functions\getlocaldate.sql" />
+    <Build Include="dbo\Functions\ufnCET2UTC.sql" />
+    <Build Include="dbo\Functions\ufnCheckSchedule.sql" />
+    <Build Include="dbo\Functions\ufnCompareVersions.sql" />
+    <Build Include="dbo\Functions\ufnDateTimeCET2UTC.sql" />
+    <Build Include="dbo\Functions\ufnDateTimeUTC2CET.sql" />
+    <Build Include="dbo\Functions\ufnFormat.sql" />
+    <Build Include="dbo\Functions\ufnGenerateChecksum.sql" />
+    <Build Include="dbo\Functions\ufnGetEasterDaysFromYear.sql" />
+    <Build Include="dbo\Functions\ufnGetEasterSundayFromYear.sql" />
+    <Build Include="dbo\Functions\ufnGetProperCase.sql" />
+    <Build Include="dbo\Functions\ufnGetUpperCaseLetters.sql" />
+    <Build Include="dbo\Functions\ufnGetUserName.sql" />
+    <Build Include="dbo\Functions\ufnInStr.sql" />
+    <Build Include="dbo\Functions\ufnIsTriggerEnabled.sql" />
+    <Build Include="dbo\Functions\ufnParseEntity.sql" />
+    <Build Include="dbo\Functions\ufnUTC2CET.sql" />
+    <Build Include="dbo\Stored Procedures\spLog.sql" />
+    <Build Include="dbo\Tables\BusinessObject.sql" />
+    <Build Include="dbo\Tables\BusinessObjectExecutionPlan.sql" />
+    <Build Include="dbo\Tables\ChangeLog.sql" />
+    <Build Include="dbo\Tables\CubeEntities.sql" />
+    <Build Include="dbo\Tables\Log.sql" />
+    <Build Include="dbo\Tables\Settings.sql" />
+    <Build Include="dbo\Tables\SourceConnection.sql" />
+    <Build Include="dbo\Tables\SourceObject.sql" />
+    <Build Include="dbo\Tables\SourceObjectDefinition.sql" />
+    <Build Include="dbo\Tables\SourceObjectExecutionPlan.sql" />
+    <Build Include="dbo\Tables\SourceObjectFileSetup.sql" />
+    <Build Include="dbo\Tables\SourceObjectKeyColumn.sql" />
+    <Build Include="dbo\Tables\SourcePartition.sql" />
+    <Build Include="dbo\User Defined Types\SourceObjectDefinition_Temp.sql" />
+    <Build Include="meta\Functions\fnSourceObject.sql" />
+    <Build Include="meta\Functions\ufnCheckSchema.sql" />
+    <Build Include="meta\Stored Procedures\spBuildLoadComplexFromView.sql" />
+    <Build Include="meta\Stored Procedures\spCreateBusinessObject.sql" />
+    <Build Include="meta\Stored Procedures\spCreateSourceObject.sql" />
+    <Build Include="meta\Stored Procedures\spDropSourceObject.sql" />
+    <Build Include="meta\Stored Procedures\spExtractCreateSelectCommand.sql" />
+    <Build Include="meta\Stored Procedures\spExtractUpdateSourceObject.sql" />
+    <Build Include="meta\Stored Procedures\spGetExtendedProperties.sql" />
+    <Build Include="meta\Stored Procedures\spLoadSourceObjectDefinition.sql" />
+    <Build Include="meta\Stored Procedures\spLookUpLoadSequence.sql" />
+    <Build Include="meta\Stored Procedures\spLookupSourceObject.sql" />
+    <Build Include="meta\Stored Procedures\spMaintainSourceObject.sql" />
+    <Build Include="meta\Stored Procedures\spSSASLookupTabularObject.sql" />
+    <Build Include="meta\Stored Procedures\spTransformGenerateExecutionPlan.sql" />
+    <Build Include="meta\Stored Procedures\spTransformLoadDimension.sql" />
+    <Build Include="meta\Stored Procedures\spTransformLoadEntity.sql" />
+    <Build Include="meta\Stored Procedures\spTransformLoadFact.sql" />
+    <Build Include="meta\Stored Procedures\spTransformLoadStaging.sql" />
+    <Build Include="meta\Stored Procedures\spTransformLookUpExecutionPlan.sql" />
+    <Build Include="meta\Stored Procedures\spUpdateIsChangeTracking.sql" />
+    <Build Include="meta\Stored Procedures\spUpdateSourceObjectDefinition.sql" />
+    <Build Include="meta\Views\BusinessObject.sql" />
+    <Build Include="meta\Views\SourceObject.sql" />
+    <Build Include="meta\Views\TabularObject.sql" />
+    <Build Include="SSIS\Stored Procedures\spExtract_ALL_01_LogStartTime.sql" />
+    <Build Include="SSIS\Stored Procedures\spExtract_ALL_06_LogStopTime.sql" />
+    <Build Include="SSIS\Stored Procedures\spLoad_ALL_01_LogStartTime.sql" />
+    <Build Include="SSIS\Stored Procedures\spLoad_ALL_05_LogStopTime.sql" />
+    <Build Include="PreDeployment\Schemas\meta.sql" />
+    <Build Include="PreDeployment\Schemas\MODEL.sql" />
+    <Build Include="PreDeployment\Schemas\SSIS.sql" />
+    <Build Include="PreDeployment\Schemas\TEMP.sql" />
+    <None Include="PreDeployment\Triggers\DisableTableTrigger.sql" />
+    <None Include="PreDeployment\Triggers\DisableViewTrigger.sql" />
+    <PreDeploy Include="PreDeployment\PreDeployment.sql" />
+    <None Include="PreDeployment\Schemas\DataWarehouseSchemas.sql" />
+    <Build Include="meta\Functions\fnWildcard.sql" />
+    <Build Include="meta\Functions\ufnFindSection.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SchemaCompare\Framework.scmp" />
+    <None Include="bin\Debug\DWAEF.dacpac" />
+    <None Include="bin\Debug\master.dacpac" />
+    <None Include="bin\Debug\SSMS.dll" />
+    <None Include="bin\Debug\SSMS.pdb" />
+  </ItemGroup>
+</Project>
