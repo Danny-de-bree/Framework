@@ -1,8 +1,4 @@
-﻿
-
-
-
-CREATE TRIGGER [ViewTracking]
+﻿CREATE TRIGGER [ViewTracking]
 ON DATABASE
 FOR DDL_VIEW_EVENTS AS
 BEGIN
@@ -36,8 +32,4 @@ BEGIN
 		END;
 	END;
 END;
-GO
-
-
-
 GO

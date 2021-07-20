@@ -76,6 +76,7 @@
     <Folder Include="SchemaCompare" />
     <Folder Include="bin" />
     <Folder Include="bin\Debug" />
+    <Folder Include="PreDeployment\ExtendedProperties" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="Environment">
@@ -165,6 +166,7 @@
     <None Include="PreDeployment\Schemas\DataWarehouseSchemas.sql" />
     <Build Include="meta\Functions\fnWildcard.sql" />
     <Build Include="meta\Functions\ufnFindSection.sql" />
+    <None Include="PreDeployment\ExtendedProperties\DatabaseExtendedProperties.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">

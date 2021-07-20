@@ -10,6 +10,10 @@
 --------------------------------------------------------------------------------------
 */
 
+/* Add Extended Properties */
+:r .\ExtendedProperties\DatabaseExtendedProperties.sql
+GO
+
 /* Create Data Warehouse schemas */
 :r .\Schemas\DataWarehouseSchemas.sql
 GO
