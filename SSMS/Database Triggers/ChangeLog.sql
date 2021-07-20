@@ -1,5 +1,4 @@
-﻿
-CREATE TRIGGER [ChangeLog] 
+﻿CREATE TRIGGER [ChangeLog] 
 ON DATABASE 
 FOR DDL_DATABASE_LEVEL_EVENTS --create_procedure, alter_procedure, drop_procedure, create_table, alter_table, drop_table, create_function, alter_function, drop_function, create_view, alter_view, drop_view 
 AS 
