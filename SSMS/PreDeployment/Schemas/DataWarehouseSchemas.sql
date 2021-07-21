@@ -9,7 +9,7 @@ SELECT
 	[SchemaId]		=	ROW_NUMBER() OVER(ORDER BY (SELECT NULL))
 ,	[SchemaName]	=	CAST(ep.[value] AS NVARCHAR(255))
 FROM sys.extended_properties AS ep WITH (TABLOCK)
-WHERE (ep.class = 0) AND (ep.name LIKE ('%Schema%'))
+WHERE (ep.class = 0) AND (ep.name LIKE ('%Schema%'));
 
 SELECT @RowCount = COUNT(1) FROM @SchemaVariable;
 
@@ -29,6 +29,6 @@ BEGIN
 
 	EXEC sys.sp_executesql @stmt;
 
-	SET @Counter = @Counter + 1
+	SET @Counter = @Counter + 1;
 
 END
