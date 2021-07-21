@@ -30,7 +30,7 @@ BEGIN
 
 	UPDATE bo WITH (TABLOCK) SET
 		bo.BusinessObjectSchema = CONVERT(NVARCHAR(255), ep.value)
-	FROM [dbo].[BusinessObject] AS bo
+	FROM [meta].[BusinessObject] AS bo
 	JOIN inserted AS i ON bo.BusinessObjectID = i.BusinessObjectID
 	JOIN sys.extended_properties AS ep WITH (NOLOCK) ON (ep.class = 0) AND ep.value = i.BusinessObjectSchema
 
