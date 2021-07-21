@@ -726,7 +726,7 @@ BEGIN
 		/* Update dbo.BusinessObjectExecutionPlan set ExecutionStatus = 'Finished' */
 		UPDATE [TARGET] WITH (TABLOCKX) SET 
 			[TARGET].[ExecutionStatusCode] = 0
-		FROM dbo.BusinessObjectExecutionPlan AS [TARGET]
+		FROM meta.BusinessObjectExecutionPlan AS [TARGET]
 		WHERE ([TARGET].[PrecedenceObjectSchema] = @SourceObjectSchema) AND ([TARGET].[PrecedenceObjectName] = @SourceObjectName)
 	END;
 
