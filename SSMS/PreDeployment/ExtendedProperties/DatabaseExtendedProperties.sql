@@ -42,47 +42,47 @@ IF EXISTS (SELECT 1 FROM sys.extended_properties WHERE class = 0 AND [name] = 'U
 
 IF ('$(Environment)' = 'Dev')
 BEGIN
-	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, 'Pelagia-DWH-KV-Dev';
-	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, '<AzureKeyVaultDev>';
+	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, '<AzureResourceGroupDev>';
+	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '<AzureSubscriptionDev>';
 
-	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, 'northeurope';
-	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, 'devpelagiadwhssas';
-	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, '<AASOlapRegionDev>';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, '<AASOlapServerDev>';
+	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, '<DWResourceGroupDev>';
+	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '<DWAzureSubscriptionDev>';
 END;
 IF ('$(Environment)' = 'Test')
 BEGIN
-	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, 'Pelagia-DWH-KV-Test';
-	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, '<AzureKeyVaultTest>';
+	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, '<AzureResourceGroupTest>';
+	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '<AzureSubscriptionTest>';
 
-	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, 'northeurope';
-	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, 'testpelagiadwhssas';
-	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, '<AASOlapRegionTest>';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, '<AASOlapServerTest>';
+	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, '<DWResourceGroupTest>';
+	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '<DWAzureSubscriptionTest>';
 END;
 IF ('$(Environment)' = 'PreProd')
 BEGIN
-	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, 'Pelagia-DWH-KV-PreProd';
-	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, '<AzureKeyVaultPreProd>';
+	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, '<AzureResourceGroupPreProd>';
+	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '<AzureSubscriptionPreProd>';
 
-	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, 'northeurope';
-	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, 'preprodpelagiadwhssas';
-	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, '<AASOlapRegionPreProd>';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, '<AASOlapServerPreProd>';
+	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, '<DWResourceGroupPreProd>';
+	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '<DWAzureSubscriptionPreProd>';
 END;
 IF ('$(Environment)' = 'Prod')
 BEGIN
-	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, 'Pelagia-DWH-KV-Prod';
-	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AzureKeyVault'					, '<AzureKeyVaultProd>';
+	EXEC sys.sp_AddExtendedProperty 'AzureResourceGroup'			, '<AzureResourceGroupProd>';
+	EXEC sys.sp_AddExtendedProperty 'AzureSubscription'				, '<AzureSubscriptionProd>';
 
-	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, 'northeurope';
-	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, 'pelagiadwhssas';
-	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, 'Pelagia_DWH_RG';
-	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '689251f0-34d2-46f9-af02-7f1511f66754';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapRegion'					, '<AASOlapRegionProd>';
+	EXEC sys.sp_AddExtendedProperty 'AASOlapServer'					, '<AASOlapServerProd>';
+	EXEC sys.sp_AddExtendedProperty 'DWResourceGroup'				, '<DWResourceGroupProd>';
+	EXEC sys.sp_AddExtendedProperty 'DWAzureSubscription'			, '<DWAzureSubscriptionProd>';
 END;
 
 /* Add Database extended properties */
