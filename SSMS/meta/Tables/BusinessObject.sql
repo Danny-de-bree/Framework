@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[BusinessObject] (
+﻿CREATE TABLE [meta].[BusinessObject] (
     [BusinessObjectID]     BIGINT          IDENTITY (1, 1) NOT NULL,
     [BusinessObjectSchema] NVARCHAR (255)  NOT NULL,
     [BusinessObjectName]   NVARCHAR (255)  NOT NULL,
@@ -17,7 +17,7 @@
 
 
 GO
-CREATE TRIGGER [dbo].[UC_BusinessObject_After_IU] ON [dbo].[BusinessObject]
+CREATE TRIGGER [meta].[UC_BusinessObject_After_IU] ON [meta].[BusinessObject]
 AFTER INSERT, UPDATE 
 AS
 BEGIN

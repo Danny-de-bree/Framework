@@ -45,7 +45,7 @@ BEGIN
 	WHERE (ep.class = 0)
 	GROUP BY (ep.major_id)
 
-	/* Should we preserve SCD2 history in extract layer - lookup in dbo.SourceObject */
+	/* Should we preserve SCD2 history in extract layer - lookup in meta.SourceObject */
 	BEGIN	
 		SELECT 
 			@PreserveSCD2History	=	CASE WHEN @DWExtractHistorySchemaName != '' THEN so.PreserveSCD2History ELSE 0 END
@@ -55,9 +55,9 @@ BEGIN
 		,	@DWSourceObjectTable	=	so.SourceObjectTable
 		,	@SourceObjectID			=	so.SourceObjectID
 		,	@SourceConnectionID		=	COALESCE(sp.SourcePartitionCode, so.SourceConnectionID)
-		FROM [dbo].[SourceObject] AS so WITH (NOLOCK)
-		INNER JOIN [dbo].[SourceConnection] AS sc WITH (NOLOCK) ON so.SourceConnectionID = sc.SourceConnectionID
-		LEFT JOIN [dbo].[SourcePartition] AS sp WITH (NOLOCK) ON sc.SourceConnectionID = sp.SourceConnectionID 
+		FROM [meta].[SourceObject] AS so WITH (NOLOCK)
+		INNER JOIN [meta].[SourceConnection] AS sc WITH (NOLOCK) ON so.SourceConnectionID = sc.SourceConnectionID
+		LEFT JOIN [meta].[SourcePartition] AS sp WITH (NOLOCK) ON sc.SourceConnectionID = sp.SourceConnectionID 
 		WHERE (sc.SourceConnectionSchema = @SourceObjectSchema) AND (so.SourceObjectTable = @SourceObjectTable)
 	END;
 
@@ -80,7 +80,7 @@ BEGIN
 		IF (SCHEMA_ID(@SourceObjectSchema) IS NULL) 
 		BEGIN
 			SELECT @stmt =
-				'EXEC (''CREATE SCHEMA ' + QUOTENAME(@SourceObjectSchema) + ' AUTHORIZATION [dbo];'');' + CHAR(13) + CHAR(10) + CHAR(10) +
+				'EXEC (''CREATE SCHEMA ' + QUOTENAME(@SourceObjectSchema) + ' AUTHORIZATION [meta];'');' + CHAR(13) + CHAR(10) + CHAR(10) +
 				
 					/* Only add extended properties to source connection schema */
 					CASE WHEN (@DWDestinationSchemaName NOT IN (@DWExtractDWSchemaName, @DWExtractHistorySchemaName))
@@ -91,7 +91,7 @@ BEGIN
 							 'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + CAST(s.SourceConnectionSchema AS NVARCHAR(255)) + ''', @name = N''DataSourceType'', @value = N''' + s.DataSourceType + '''; ' + CHAR(10)
 						ELSE ''
 					END
-			FROM [dbo].[SourceConnection] AS s
+			FROM [meta].[SourceConnection] AS s
 			WHERE (s.SourceConnectionSchema = @DWSourceObjectSchema)
 
 			PRINT @stmt;
@@ -144,8 +144,8 @@ BEGIN
 			,	[SourceObjectColumnLength]			=	sod.[SourceObjectColumnLength]
 			,	[SourceObjectColumnIsNullable]		=	CASE WHEN (Keys.SourceObjectKeyColumnId IS NULL) THEN sod.SourceObjectColumnIsNullable ELSE 'NOT NULL' END
 			,	[SourceObjectColumnIsPrimaryKey]	=	CASE WHEN (Keys.SourceObjectKeyColumnId IS NULL) THEN sod.SourceObjectColumnIsPrimaryKey ELSE 1 END
-			FROM [dbo].[SourceObjectDefinition] AS sod WITH (NOLOCK)
-			LEFT JOIN [dbo].[SourceObjectKeyColumn] AS Keys WITH (NOLOCK) ON (Keys.SourceObjectId = sod.SourceObjectID) AND (Keys.SourceObjectKeyColumnName = sod.SourceObjectColumnName)
+			FROM [meta].[SourceObjectDefinition] AS sod WITH (NOLOCK)
+			LEFT JOIN [meta].[SourceObjectKeyColumn] AS Keys WITH (NOLOCK) ON (Keys.SourceObjectId = sod.SourceObjectID) AND (Keys.SourceObjectKeyColumnName = sod.SourceObjectColumnName)
 			WHERE (sod.SourceObjectID = @SourceObjectID)
 			ORDER BY [SourceObjectColumnIsPrimaryKey] desc, [SourceObjectPrimaryKeyNumber], [SourceObjectColumnID]
 		OPEN cur 
@@ -246,8 +246,8 @@ BEGIN
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''IncrementalOffSet'', @value = ' + CAST(so.IncrementalOffSet AS nvarchar) + '; ' + CHAR(10) +
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''SourceObjectFilter'', @value = N''' + REPLACE(so.SourceObjectFilter, '''', '''''') + '''; ' + CHAR(10) +
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''IsEnabled'', @value = ' + CAST(so.IsEnabled AS nvarchar) + '; ' + CHAR(10)
-							FROM dbo.SourceObject AS so WITH (NOLOCK)
-							INNER JOIN dbo.SourceConnection AS sc WITH (NOLOCK) ON (so.SourceConnectionID = sc.SourceConnectionID)
+							FROM meta.SourceObject AS so WITH (NOLOCK)
+							INNER JOIN meta.SourceConnection AS sc WITH (NOLOCK) ON (so.SourceConnectionID = sc.SourceConnectionID)
 							WHERE (so.SourceObjectID = @SourceObjectID)
 						)
 					ELSE ''
@@ -263,7 +263,7 @@ BEGIN
 				EXEC dbo.spLog @subsystem = 'DW', @source = @PackageName, @type = 'Error', @severity = 1, @message = @message, @entity = @SourceObjectTable;
 			END;
 
-			/* Prepare message if sql statement is valid and update dbo.SourceObject */
+			/* Prepare message if sql statement is valid and update meta.SourceObject */
 			IF (@stmt IS NOT NULL)
 			BEGIN			
 				IF (@emulation = 1) SELECT @SourceObjectSchema AS SourceObjectSchema, @SourceObjectTable AS SourceObjectName, @stmt AS ObjectDefinition;
@@ -293,10 +293,10 @@ BEGIN
 						SET @dbTriggerDisabled = 0;
 					END;
 
-					/* Set IsReset in dbo.SourceObject to 0 to prevent Azure Data Factory pipeline from resetting the table */
+					/* Set IsReset in meta.SourceObject to 0 to prevent Azure Data Factory pipeline from resetting the table */
 					IF (@DWDestinationSchemaName IN (@DWExtractDWSchemaName, @DWExtractHistorySchemaName)) 
 					BEGIN 
-						UPDATE dbo.SourceObject SET IsReset = 0 WHERE (SourceObjectID = @SourceObjectID);
+						UPDATE meta.SourceObject SET IsReset = 0 WHERE (SourceObjectID = @SourceObjectID);
 
 						/* Run maintenance of Data Warehouse table apply schema changes */
 						EXEC meta.spMaintainSourceObject @DWSourceObjectSchema, @SourceObjectSchema, @SourceObjectTable, @emulation;

@@ -1,4 +1,5 @@
-﻿CREATE VIEW [meta].[BusinessObject]
+﻿
+CREATE VIEW [meta].[BusinessObjectView]
 AS
 WITH cte_ep AS (
 	SELECT DWTransformStagingSchemaName = CAST(ep.value AS NVARCHAR(255))

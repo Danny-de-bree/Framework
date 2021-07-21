@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SourceObjectFileSetup] (
+﻿CREATE TABLE [meta].[SourceObjectFileSetup] (
     [SourceObjectFileSetupID] BIGINT         IDENTITY (1, 1) NOT NULL,
     [SourceObjectID]          BIGINT         NOT NULL,
     [LoopFileFlag]            TINYINT        CONSTRAINT [DF_SourceObjectFileSetup_LoopFileFlag] DEFAULT ((0)) NOT NULL,
@@ -15,8 +15,6 @@
     [EscapeCharacter]         NVARCHAR (250) NULL,
     [Encoding]                NVARCHAR (250) NULL,
     CONSTRAINT [PK_SourceObjectFileSetup] PRIMARY KEY NONCLUSTERED ([SourceObjectFileSetupID] ASC) WITH (OPTIMIZE_FOR_SEQUENTIAL_KEY = ON),
-    CONSTRAINT [FK_SourceObjectFileSetup_SourceObject] FOREIGN KEY ([SourceObjectID]) REFERENCES [dbo].[SourceObject] ([SourceObjectID]) ON DELETE CASCADE 
+    CONSTRAINT [FK_SourceObjectFileSetup_SourceObject] FOREIGN KEY ([SourceObjectID]) REFERENCES [meta].[SourceObject] ([SourceObjectID]) ON DELETE CASCADE
 );
-
-
 

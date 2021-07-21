@@ -1,13 +1,13 @@
 ﻿CREATE PROCEDURE [meta].[spUpdateSourceObjectDefinition] 
 	
-	@SourceObjectDefinition [dbo].[SourceObjectDefinition_Temp] READONLY
+	@SourceObjectDefinition [meta].[SourceObjectDefinition_Temp] READONLY
 
 AS 
 BEGIN
 
 	/* Merge update dbo.SourceObjectDefinition */
 
-	MERGE [dbo].[SourceObjectDefinition] AS [TARGET] 
+	MERGE [meta].[SourceObjectDefinition] AS [TARGET] 
 	USING @SourceObjectDefinition AS [SOURCE]
 	ON ([SOURCE].[SourceObjectID] = [TARGET].[SourceObjectID]) AND ([SOURCE].[SourceObjectColumnID] = [TARGET].[SourceObjectColumnID])
 

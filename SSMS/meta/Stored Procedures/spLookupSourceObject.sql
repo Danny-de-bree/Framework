@@ -34,7 +34,7 @@ BEGIN
 			,	[LoadSequence]				=	so.[LoadSequence]
 			,	[DataSourceType]			=	so.[DataSourceType]
 			,	[MaxLoadSequence]			=	so.[MaxLoadSequence]
-			FROM [meta].[SourceObject] AS so
+			FROM [meta].[SourceObjectView] AS so
 			WHERE 
 				(so.[IsEnabled] = 1) ' + CASE WHEN (@environment != 'Dev') THEN 'AND (so.[ScheduleOk] = 1)' ELSE '' END + ' 
 			ORDER BY (SELECT NEWID())

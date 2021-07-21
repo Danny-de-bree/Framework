@@ -1,4 +1,4 @@
-﻿CREATE TYPE [dbo].[SourceObjectDefinition_Temp] AS TABLE (
+﻿CREATE TYPE [meta].[SourceObjectDefinition_Temp] AS TABLE (
     [SourceObjectID]                 BIGINT         NULL,
     [SourceConnectionID]             BIGINT         NULL,
     [SourceObjectColumnID]           BIGINT         NULL,

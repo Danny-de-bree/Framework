@@ -77,6 +77,8 @@
     <Folder Include="bin" />
     <Folder Include="bin\Debug" />
     <Folder Include="PreDeployment\ExtendedProperties" />
+    <Folder Include="meta\Tables\" />
+    <Folder Include="meta\User Defined Types\" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="Environment">
@@ -113,20 +115,10 @@
     <Build Include="dbo\Functions\ufnParseEntity.sql" />
     <Build Include="dbo\Functions\ufnUTC2CET.sql" />
     <Build Include="dbo\Stored Procedures\spLog.sql" />
-    <Build Include="dbo\Tables\BusinessObject.sql" />
-    <Build Include="dbo\Tables\BusinessObjectExecutionPlan.sql" />
     <Build Include="dbo\Tables\ChangeLog.sql" />
     <Build Include="dbo\Tables\CubeEntities.sql" />
     <Build Include="dbo\Tables\Log.sql" />
     <Build Include="dbo\Tables\Settings.sql" />
-    <Build Include="dbo\Tables\SourceConnection.sql" />
-    <Build Include="dbo\Tables\SourceObject.sql" />
-    <Build Include="dbo\Tables\SourceObjectDefinition.sql" />
-    <Build Include="dbo\Tables\SourceObjectExecutionPlan.sql" />
-    <Build Include="dbo\Tables\SourceObjectFileSetup.sql" />
-    <Build Include="dbo\Tables\SourceObjectKeyColumn.sql" />
-    <Build Include="dbo\Tables\SourcePartition.sql" />
-    <Build Include="dbo\User Defined Types\SourceObjectDefinition_Temp.sql" />
     <Build Include="meta\Functions\fnSourceObject.sql" />
     <Build Include="meta\Functions\ufnCheckSchema.sql" />
     <Build Include="meta\Stored Procedures\spBuildLoadComplexFromView.sql" />
@@ -149,9 +141,6 @@
     <Build Include="meta\Stored Procedures\spTransformLookUpExecutionPlan.sql" />
     <Build Include="meta\Stored Procedures\spUpdateIsChangeTracking.sql" />
     <Build Include="meta\Stored Procedures\spUpdateSourceObjectDefinition.sql" />
-    <Build Include="meta\Views\BusinessObject.sql" />
-    <Build Include="meta\Views\SourceObject.sql" />
-    <Build Include="meta\Views\TabularObject.sql" />
     <Build Include="SSIS\Stored Procedures\spExtract_ALL_01_LogStartTime.sql" />
     <Build Include="SSIS\Stored Procedures\spExtract_ALL_06_LogStopTime.sql" />
     <Build Include="SSIS\Stored Procedures\spLoad_ALL_01_LogStartTime.sql" />
@@ -167,6 +156,19 @@
     <Build Include="meta\Functions\fnWildcard.sql" />
     <Build Include="meta\Functions\ufnFindSection.sql" />
     <None Include="PreDeployment\ExtendedProperties\DatabaseExtendedProperties.sql" />
+    <Build Include="meta\Tables\SourcePartition.sql" />
+    <Build Include="meta\Tables\SourceObjectKeyColumn.sql" />
+    <Build Include="meta\Tables\SourceObjectFileSetup.sql" />
+    <Build Include="meta\Tables\SourceObjectExecutionPlan.sql" />
+    <Build Include="meta\Tables\SourceObjectDefinition.sql" />
+    <Build Include="meta\Tables\SourceObject.sql" />
+    <Build Include="meta\Tables\SourceConnection.sql" />
+    <Build Include="meta\Tables\BusinessObjectExecutionPlan.sql" />
+    <Build Include="meta\Tables\BusinessObject.sql" />
+    <Build Include="meta\Views\TabularObjectView.sql" />
+    <Build Include="meta\Views\SourceObjectView.sql" />
+    <Build Include="meta\Views\BusinessObjectView.sql" />
+    <Build Include="meta\User Defined Types\SourceObjectDefinition_Temp.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">

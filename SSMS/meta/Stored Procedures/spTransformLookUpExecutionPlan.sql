@@ -14,7 +14,7 @@ BEGIN
 
 		/* Lookup Row count of available entities which has not been loaded */
 		SELECT @CountRows = COUNT(DISTINCT [DestinationTableName]) 
-		FROM [dbo].[BusinessObjectExecutionPlan] WITH (TABLOCKX) 
+		FROM [meta].[BusinessObjectExecutionPlan] WITH (TABLOCKX) 
 		WHERE ([IsEnabled] = 1) AND ([ExecutionStatus] = '');
 
 		/* Generate base cte calculate next available entity */
@@ -25,7 +25,7 @@ BEGIN
 			,	[ExecutionStatusCode]		=	SUM(so.[ExecutionStatusCode])
 			,	[ExecutionStatus]			=	MAX(so.[ExecutionStatus])
 			,	[LoadSequence]				=	MAX([LoadSequence])
-			FROM [dbo].[BusinessObjectExecutionPlan] AS so WITH (TABLOCKX)
+			FROM [meta].[BusinessObjectExecutionPlan] AS so WITH (TABLOCKX)
 			WHERE (so.[IsEnabled] = 1)
 			GROUP BY so.[DestinationSchemaName], so.[DestinationTableName]
 		),
@@ -50,7 +50,7 @@ BEGIN
 		,	INSERTED.DestinationTableName	
 		,	INSERTED.LoadSequence
 		INTO @Output 
-		FROM [dbo].[BusinessObjectExecutionPlan] AS [TARGET] WITH (TABLOCKX)
+		FROM [meta].[BusinessObjectExecutionPlan] AS [TARGET] WITH (TABLOCKX)
 		WHERE EXISTS (
 			SELECT 1 FROM Cte_FirstAvaliableEntity AS [SOURCE] 
 			WHERE ([TARGET].[DestinationSchemaName] = [SOURCE].[DestinationSchemaName]) 

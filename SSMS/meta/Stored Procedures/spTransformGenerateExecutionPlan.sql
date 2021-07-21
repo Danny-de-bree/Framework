@@ -8,13 +8,13 @@ BEGIN
 	DECLARE @DWFactSchemaName NVARCHAR(255);
 
 	/* Drop SourceObjectExecutionPlan table if exists */
-	DROP TABLE IF EXISTS [dbo].[BusinessObjectExecutionPlan];
+	DROP TABLE IF EXISTS [meta].[BusinessObjectExecutionPlan];
 	
 	/* Drop existing #temp table: #SourceObjectMetaData if exists */
 	DROP TABLE IF EXISTS #SourceObjectMetaData;
 	
 	/* Create SourceObjectExecutionPlan table */
-	CREATE TABLE [dbo].[BusinessObjectExecutionPlan](
+	CREATE TABLE [meta].[BusinessObjectExecutionPlan](
 		[DestinationSchemaName] [NVARCHAR](255) NULL
 	,	[DestinationTableName] [NVARCHAR](255) NULL
 	,	[LoadSequence] INT NULL
@@ -57,7 +57,7 @@ BEGIN
     ,	[PreserveSCD2History]
     ,	[IsEnabled]
 	INTO #SourceObjectMetaData
-	FROM meta.businessObject;
+	FROM meta.businessObjectView;
 
 	/* Generate new execution plan based on dependencies between TRANSFORM layer and EDW tables */
 	WITH Cte_Tree AS (
@@ -101,7 +101,7 @@ BEGIN
 		INNER JOIN #SourceObjectMetaData AS md ON d.referencing_id = (OBJECT_ID(md.SourceObjectSchema + '.' + md.SourceObjectName)) AND (d.referenced_entity_name <> md.BusinessObjectName)
 	)
 
-	INSERT INTO [dbo].[BusinessObjectExecutionPlan] (
+	INSERT INTO [meta].[BusinessObjectExecutionPlan] (
 		[DestinationSchemaName]		
 	,	[DestinationTableName]		
 	,	[LoadSequence]				

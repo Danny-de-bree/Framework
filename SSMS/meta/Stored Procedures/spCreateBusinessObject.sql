@@ -47,11 +47,11 @@ BEGIN
 	
 	SET @PackageName					=	OBJECT_NAME(@@PROCID);
 	
-	/* Check if BusinessObject exists in dbo.BusinessObject and reasign variables */
+	/* Check if BusinessObject exists in meta.BusinessObject and reasign variables */
 	SELECT 
 		@BusinessObjectSchema			=	bo.BusinessObjectSchema
 	,	@BusinessObjectName				=	bo.BusinessObjectName
-	FROM dbo.BusinessObject AS bo WITH (TABLOCK)
+	FROM meta.BusinessObject AS bo WITH (TABLOCK)
 	WHERE (bo.BusinessObjectSchema = @BusinessObjectSchema) AND (bo.BusinessObjectName = @BusinessObjectName);
 
 	/* Prepare common Data Warehouse parameters */	
@@ -136,19 +136,19 @@ BEGIN
 			SELECT
 				[BusinessObjectColumnName]			=	c.name
 			,	[BusinessObjectColumnType]			=	UPPER(t.name)
-			,	[BusinessObjectColumnLength]			=	CASE 
+			,	[BusinessObjectColumnLength]		=	CASE 
 															WHEN t.name IN ('varchar', 'char', 'varbinary', 'binary', 'text') THEN '(' + CASE WHEN c.max_length = -1 THEN '4000' ELSE CAST(c.max_length AS VARCHAR(5)) END + ')'
 															WHEN t.name IN ('nvarchar', 'nchar', 'ntext') THEN '(' + CASE WHEN c.max_length = -1 THEN '4000' ELSE CAST(c.max_length / 2 AS VARCHAR(5)) END + ')'
 															WHEN t.name IN ('datetime2', 'time2', 'datetimeoffset') THEN '(' + CAST(c.scale AS VARCHAR(5)) + ')'
 															WHEN t.name IN ('numeric', 'decimal') THEN '(' + CAST(c.[precision] AS VARCHAR(5)) + ', ' + CAST(c.scale AS VARCHAR(5)) + ')'
 															ELSE ''
 														END
-			,	[BusinessObjectColumnIsNullable]		=	CASE WHEN c.name LIKE (OBJECT_NAME(c.object_id) + '%' + @DWBusinessKeySuffix) THEN 'NOT NULL' ELSE 'NULL' END
+			,	[BusinessObjectColumnIsNullable]	=	CASE WHEN c.name LIKE (OBJECT_NAME(c.object_id) + '%' + @DWBusinessKeySuffix) THEN 'NOT NULL' ELSE 'NULL' END
 			,	[BusinessObjectColumnIsPrimaryKey]	=	CASE WHEN c.name LIKE (OBJECT_NAME(c.object_id) + '%' + @DWBusinessKeySuffix) THEN 1 ELSE 0 END
-			,	[BusinessObjectColumnIsLookupKey]		=	CASE WHEN (so.LookupKey LIKE ('%' + c.name + '%')) THEN 1 ELSE 0 END
+			,	[BusinessObjectColumnIsLookupKey]	=	CASE WHEN (so.LookupKey LIKE ('%' + c.name + '%')) THEN 1 ELSE 0 END
 			FROM sys.columns AS c	
 			INNER JOIN sys.types AS t ON (c.user_type_id = t.user_type_id)
-			INNER JOIN dbo.BusinessObject AS so ON (so.BusinessObjectSchema = @BusinessObjectSchema) AND (so.BusinessObjectName = @BusinessObjectName)
+			INNER JOIN meta.BusinessObject AS so ON (so.BusinessObjectSchema = @BusinessObjectSchema) AND (so.BusinessObjectName = @BusinessObjectName)
 			WHERE (c.object_id = OBJECT_ID(@DWTransformStagingSchemaName + '.' + @BusinessObjectName)) AND (c.is_identity = 0) AND (c.default_object_id = 0)
 			ORDER BY c.column_id
 		OPEN cur 
@@ -265,7 +265,7 @@ BEGIN
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + @DWDestinationSchemaName + ''', @level1type = N''TABLE'', @level1name = N''' + so.BusinessObjectName + ''', @name = N''PreserveSCD2History'', @value = ' + CAST(so.PreserveSCD2History AS nvarchar) + '; ' + CHAR(10) +
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + @DWDestinationSchemaName + ''', @level1type = N''TABLE'', @level1name = N''' + so.BusinessObjectName + ''', @name = N''IncrementalOffSet'', @value = ' + CAST(so.IncrementalOffSet AS nvarchar) + '; ' + CHAR(10) +					
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + @DWDestinationSchemaName + ''', @level1type = N''TABLE'', @level1name = N''' + so.BusinessObjectName + ''', @name = N''IsEnabled'', @value = ' + CAST(so.IsEnabled AS nvarchar) + '; ' + CHAR(10)
-							FROM dbo.BusinessObject AS so
+							FROM meta.BusinessObject AS so
 							LEFT JOIN sys.sql_expression_dependencies AS sed ON (sed.referenced_id = OBJECT_ID(@DWDestinationSchemaName + '.' + so.BusinessObjectName))
 							LEFT JOIN sys.objects AS o ON sed.referencing_id = o.object_id AND o.type = 'P'
 							WHERE (so.BusinessObjectSchema = @BusinessObjectSchema) AND (so.BusinessObjectName = @BusinessObjectName)
@@ -283,7 +283,7 @@ BEGIN
 				EXEC dbo.spLog @subsystem = 'DW', @source = @PackageName, @type = 'Error', @severity = 1, @message = @message, @entity = @BusinessObjectName;
 			END;
 
-			/* Prepare message if sql statement is valid and update dbo.BusinessObject */
+			/* Prepare message if sql statement is valid and update meta.BusinessObject */
 			IF (@stmt IS NOT NULL)
 			BEGIN			
 				IF (@emulation = 1) SELECT @DWDestinationSchemaName AS DestinationSchema, @BusinessObjectName AS BusinessObjectName, @stmt AS ObjectDefinition;

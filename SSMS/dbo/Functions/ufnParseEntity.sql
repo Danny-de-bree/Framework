@@ -1,4 +1,5 @@
-﻿CREATE FUNCTION [dbo].[ufnParseEntity](@Definition nvarchar(max))
+﻿
+CREATE FUNCTION [dbo].[ufnParseEntity](@Definition nvarchar(max))
 RETURNS @Result TABLE (
 	Id int IDENTITY(1,1)
 	,LogicalId int
@@ -65,19 +66,19 @@ BEGIN
 		;  
 
 	/* Remove all comments made using /**/ */
-	WHILE (CHARINDEX('/*',@Definition) > 0)
+	WHILE (CHARINDEX('/*',@definition) > 0)
 	BEGIN
-		SELECT @Definition = STUFF(@Definition, CHARINDEX('/*',@Definition), CHARINDEX('*/',@Definition) - CHARINDEX('/*',@Definition) + 2, /*2 is the length of the search term */ '')
+		SELECT @definition = STUFF(@definition, CHARINDEX('/*',@definition), CHARINDEX('*/',@definition) - CHARINDEX('/*',@definition) + 2, /*2 is the length of the search term */ '')
 	END;
 
 	/* Remove all comments made using -- */
-	WHILE (CHARINDEX('--',@Definition) > 0) AND (CHARINDEX(CHAR(13) + CHAR(10),@Definition,CHARINDEX('--',@Definition)) > CHARINDEX('--',@Definition))
+	WHILE (CHARINDEX('--',@definition) > 0) AND (CHARINDEX(CHAR(13) + CHAR(10),@definition,CHARINDEX('--',@definition)) > CHARINDEX('--',@definition))
 	BEGIN
-		SELECT @Definition = STUFF(@Definition, CHARINDEX('--',@Definition), CHARINDEX(@vbCrLf,@Definition,CHARINDEX('--',@Definition)) - CHARINDEX('--',@Definition) + 2, '')
+		SELECT @definition = STUFF(@definition, CHARINDEX('--',@definition), CHARINDEX(@vbCrLf,@definition,CHARINDEX('--',@definition)) - CHARINDEX('--',@definition) + 2, '')
 	END;
 
 	/* Udate definition and remove blank lines */
-	SET @Definition = REPLACE(TRIM(@Definition), CHAR(13) + CHAR(10), '') 
+	SET @Definition = REPLACE(TRIM(@definition), CHAR(10) + CHAR(13), '') 
 	
 	/* you can now search this without false positives from comments. */
 
@@ -92,7 +93,7 @@ BEGIN
 
 		UPDATE @tokenList SET TokenPos = NULL;
 
-		UPDATE @tokenList SET TokenPos = meta.ufnFindSection(@wrkDefinition, Token, 1);
+		UPDATE @tokenList SET TokenPos = MODEL.ufnFindSection(@wrkDefinition, Token, 1);
 
 		-- Only for debugging
 		DECLARE tokenC CURSOR FOR
@@ -217,7 +218,7 @@ BEGIN
 
 		DELETE FROM @Result WHERE (Type = 'WITH');
 
-		SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, ',', 0);
+		SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, ',', 0);
 
 		WHILE (@pos1 > 0)
 		BEGIN
@@ -233,7 +234,7 @@ BEGIN
 
 			SET @wrkDefinition = @wrkDefinition2;
 
-			SELECT @pos1 = meta.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
+			SELECT @pos1 = MODEL.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @pos1 += 1;
@@ -279,7 +280,7 @@ BEGIN
 
 			UPDATE @tokenList SET TokenPos = NULL;
 
-			UPDATE @tokenList SET TokenPos = meta.ufnFindSection(@wrkDefinition, Token, 0);
+			UPDATE @tokenList SET TokenPos = MODEL.ufnFindSection(@wrkDefinition, Token, 0);
 
 			-- Only for debugging
 			DECLARE tokenC CURSOR FOR
@@ -392,7 +393,7 @@ BEGIN
 		SET @wrkDefinition = SUBSTRING(@wrkDefinition, @pos1 + LEN('SELECT'), LEN(@wrkDefinition));
 		SET @startPos = @startPos + @pos1 + LEN('SELECT') - 1;
 
-		SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, ',', 0);
+		SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, ',', 0);
 		WHILE (@pos1 > 0)
 		BEGIN
 			SET @wrkDefinition2 = SUBSTRING(@wrkDefinition, @pos1, LEN(@wrkDefinition));
@@ -419,7 +420,7 @@ BEGIN
 			SET @field = NULL;
 			SET @expression = NULL;
 			-- Do we have ' = '
-			SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, '=', 1);
+			SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, '=', 1);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @field = LTRIM(RTRIM(SUBSTRING(@wrkDefinition, 1, @pos1 - 1))); 
@@ -428,7 +429,7 @@ BEGIN
 			ELSE BEGIN
 				-- No ' = '
 				-- Find last '.'
-				SELECT @pos1 = meta.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
+				SELECT @pos1 = MODEL.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
 				IF (@pos1 > 0)
 				BEGIN
 					SET @field = REVERSE(SUBSTRING(REVERSE(@wrkDefinition), 1, @pos1 - 1));
@@ -462,7 +463,7 @@ BEGIN
 
 			SET @wrkDefinition = @wrkDefinition2;
 
-			SELECT @pos1 = meta.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
+			SELECT @pos1 = MODEL.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @pos1 += 1;
@@ -488,7 +489,7 @@ BEGIN
 		SET @field = NULL;
 		SET @expression = NULL;
 		-- Do we have ' = '
-		SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, '=', 1);
+		SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, '=', 1);
 		IF (@pos1 > 0)
 		BEGIN
 			SET @field = LTRIM(RTRIM(SUBSTRING(@wrkDefinition, 1, @pos1 - 1)));
@@ -497,7 +498,7 @@ BEGIN
 		ELSE BEGIN
 			-- No ' AS '
 			-- Find last '.'
-			SELECT @pos1 = meta.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
+			SELECT @pos1 = MODEL.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @field = REVERSE(SUBSTRING(REVERSE(@wrkDefinition), 1, @pos1 - 1));

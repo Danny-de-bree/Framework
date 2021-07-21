@@ -22,8 +22,8 @@ BEGIN
 	,	@SourceSchema				=	so.SourceSchema
 	,	@SourceTable				=	so.SourceTable
 	,	@SourceDatabaseName			=	sc.DataSourceDatabaseName
-	FROM dbo.SourceObject AS so WITH (NOLOCK)
-	JOIN dbo.SourceConnection AS sc WITH (NOLOCK) ON (so.SourceConnectionID = sc.SourceConnectionID)
+	FROM meta.SourceObject AS so WITH (NOLOCK)
+	JOIN meta.SourceConnection AS sc WITH (NOLOCK) ON (so.SourceConnectionID = sc.SourceConnectionID)
 	WHERE (sc.SourceConnectionSchema = @SourceConnectionSchema) AND (so.SourceObjectTable = @SourceObjectTable)
 	
 	/* Get Current Database default collation to avoid collation conflicts on source */

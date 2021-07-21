@@ -1,4 +1,5 @@
-﻿CREATE VIEW [meta].[TabularObject]
+﻿
+CREATE VIEW [meta].[TabularObjectView]
 AS
 WITH ExtendedProperties AS (
 	SELECT 

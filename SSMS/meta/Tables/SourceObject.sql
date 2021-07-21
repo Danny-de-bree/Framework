@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SourceObject] (
+﻿CREATE TABLE [meta].[SourceObject] (
     [SourceObjectID]       BIGINT         IDENTITY (1, 1) NOT NULL,
     [SourceConnectionID]   BIGINT         NOT NULL,
     [SourceObjectTable]    NVARCHAR (255) NOT NULL,
@@ -14,9 +14,7 @@
     [PreserveSCD2History]  TINYINT        CONSTRAINT [DF_SourceObject_PreserveSCD2History] DEFAULT ((0)) NULL,
     CONSTRAINT [PK_SourceObject] PRIMARY KEY NONCLUSTERED ([SourceObjectID] ASC) WITH (OPTIMIZE_FOR_SEQUENTIAL_KEY = ON),
     CONSTRAINT [CK_SourceObject_LoadModeETL] CHECK ([LoadModeETL]='CDC' OR [LoadModeETL]='ICL' OR [LoadModeETL]='CUSTOM' OR [LoadModeETL]='CT' OR [LoadModeETL]='FULL'),
-    CONSTRAINT [FK_SourceObject_SourceConnection] FOREIGN KEY ([SourceConnectionID]) REFERENCES [dbo].[SourceConnection] ([SourceConnectionID]),
+    CONSTRAINT [FK_SourceObject_SourceConnection] FOREIGN KEY ([SourceConnectionID]) REFERENCES [meta].[SourceConnection] ([SourceConnectionID]),
     CONSTRAINT [UC_SourceObject] UNIQUE CLUSTERED ([SourceConnectionID] ASC, [SourceObjectTable] ASC)
 );
-
-
 
