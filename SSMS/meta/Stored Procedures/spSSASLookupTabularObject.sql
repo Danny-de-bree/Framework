@@ -16,7 +16,7 @@ BEGIN
 		,	[TabularObjectName]
 		,	[IsEnabled]
 		,	[IsIcremental]
-		FROM meta.TabularObject 
+		FROM meta.TabularObjectView
 		WHERE (IsEnabled = 1)
 		ORDER BY [TabularObjectName]
 	END TRY

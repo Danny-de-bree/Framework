@@ -1,5 +1,4 @@
-﻿
-CREATE FUNCTION [dbo].[ufnParseEntity](@Definition nvarchar(max))
+﻿CREATE FUNCTION [dbo].[ufnParseEntity](@Definition nvarchar(max))
 RETURNS @Result TABLE (
 	Id int IDENTITY(1,1)
 	,LogicalId int
@@ -93,7 +92,7 @@ BEGIN
 
 		UPDATE @tokenList SET TokenPos = NULL;
 
-		UPDATE @tokenList SET TokenPos = MODEL.ufnFindSection(@wrkDefinition, Token, 1);
+		UPDATE @tokenList SET TokenPos = meta.ufnFindSection(@wrkDefinition, Token, 1);
 
 		-- Only for debugging
 		DECLARE tokenC CURSOR FOR
@@ -218,7 +217,7 @@ BEGIN
 
 		DELETE FROM @Result WHERE (Type = 'WITH');
 
-		SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, ',', 0);
+		SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, ',', 0);
 
 		WHILE (@pos1 > 0)
 		BEGIN
@@ -234,7 +233,7 @@ BEGIN
 
 			SET @wrkDefinition = @wrkDefinition2;
 
-			SELECT @pos1 = MODEL.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
+			SELECT @pos1 = meta.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @pos1 += 1;
@@ -246,7 +245,7 @@ BEGIN
 	END;
 	-- END: We now have to handle the WITH section as it can contain multiple CTE's
 
-	-- BEGIN: Now lets us find the logical stuff except MODEL
+	-- BEGIN: Now lets us find the logical stuff except meta
 	SET @tokenCnt = 0;
 	WHILE (@tokenCnt < 3)
 	BEGIN
@@ -280,7 +279,7 @@ BEGIN
 
 			UPDATE @tokenList SET TokenPos = NULL;
 
-			UPDATE @tokenList SET TokenPos = MODEL.ufnFindSection(@wrkDefinition, Token, 0);
+			UPDATE @tokenList SET TokenPos = meta.ufnFindSection(@wrkDefinition, Token, 0);
 
 			-- Only for debugging
 			DECLARE tokenC CURSOR FOR
@@ -331,9 +330,9 @@ BEGIN
 			SET @startPos = @startPos + (@len - 1);
 		END;
 	END;
-	-- END: Now lets us find the logical stuff except MODEL
+	-- END: Now lets us find the logical stuff except meta
 
-	-- BEGIN: The MODEL logical block is special
+	-- BEGIN: The meta logical block is special
 	SET @startPos = (SELECT TOP 1 r.StartPos FROM @Result AS r ORDER BY r.StartPos);
 	SET @endPos = (SELECT TOP 1 r.StartPos FROM @Result AS r WHERE (r.TypeId >= 100) ORDER BY r.StartPos);
 
@@ -349,9 +348,9 @@ BEGIN
 
 		SET @len = @endPos - @startPos + 1
 
-		INSERT INTO @Result(TypeId, Type, StartPos, EndPos, Definition) VALUES(101, 'MODEL', @startPos, @endPos, SUBSTRING(@Definition, @startPos, @len));
+		INSERT INTO @Result(TypeId, Type, StartPos, EndPos, Definition) VALUES(101, 'meta', @startPos, @endPos, SUBSTRING(@Definition, @startPos, @len));
 	END;
-	-- END: The MODEL logical block is special
+	-- END: The meta logical block is special
 
 	-- Now lets us link the technical sections into the logical sections
 	UPDATE r
@@ -363,14 +362,14 @@ BEGIN
 		AND (r.StartPos >= s.StartPos)
 		AND (r.EndPos <= s.EndPos);
 
-	-- What is left will attached to the MODEL section
+	-- What is left will attached to the meta section
 	UPDATE r
 	SET r.LogicalId = s.Id
 	FROM @Result AS r
 	CROSS JOIN @Result AS s
 	WHERE (r.TypeId < 100)
 		AND (r.LogicalId IS NULL)
-		AND (s.Type = 'MODEL');
+		AND (s.Type = 'meta');
 
 	-- Let us split the output fields
 	DECLARE outputC CURSOR FOR
@@ -393,7 +392,7 @@ BEGIN
 		SET @wrkDefinition = SUBSTRING(@wrkDefinition, @pos1 + LEN('SELECT'), LEN(@wrkDefinition));
 		SET @startPos = @startPos + @pos1 + LEN('SELECT') - 1;
 
-		SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, ',', 0);
+		SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, ',', 0);
 		WHILE (@pos1 > 0)
 		BEGIN
 			SET @wrkDefinition2 = SUBSTRING(@wrkDefinition, @pos1, LEN(@wrkDefinition));
@@ -420,7 +419,7 @@ BEGIN
 			SET @field = NULL;
 			SET @expression = NULL;
 			-- Do we have ' = '
-			SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, '=', 1);
+			SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, '=', 1);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @field = LTRIM(RTRIM(SUBSTRING(@wrkDefinition, 1, @pos1 - 1))); 
@@ -429,7 +428,7 @@ BEGIN
 			ELSE BEGIN
 				-- No ' = '
 				-- Find last '.'
-				SELECT @pos1 = MODEL.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
+				SELECT @pos1 = meta.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
 				IF (@pos1 > 0)
 				BEGIN
 					SET @field = REVERSE(SUBSTRING(REVERSE(@wrkDefinition), 1, @pos1 - 1));
@@ -463,7 +462,7 @@ BEGIN
 
 			SET @wrkDefinition = @wrkDefinition2;
 
-			SELECT @pos1 = MODEL.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
+			SELECT @pos1 = meta.ufnFindSection(SUBSTRING(@wrkDefinition, 2, LEN(@wrkDefinition)), ',', 0);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @pos1 += 1;
@@ -489,7 +488,7 @@ BEGIN
 		SET @field = NULL;
 		SET @expression = NULL;
 		-- Do we have ' = '
-		SELECT @pos1 = MODEL.ufnFindSection(@wrkDefinition, '=', 1);
+		SELECT @pos1 = meta.ufnFindSection(@wrkDefinition, '=', 1);
 		IF (@pos1 > 0)
 		BEGIN
 			SET @field = LTRIM(RTRIM(SUBSTRING(@wrkDefinition, 1, @pos1 - 1)));
@@ -498,7 +497,7 @@ BEGIN
 		ELSE BEGIN
 			-- No ' AS '
 			-- Find last '.'
-			SELECT @pos1 = MODEL.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
+			SELECT @pos1 = meta.ufnFindSection(REVERSE(@wrkDefinition), '.', 0);
 			IF (@pos1 > 0)
 			BEGIN
 				SET @field = REVERSE(SUBSTRING(REVERSE(@wrkDefinition), 1, @pos1 - 1));
