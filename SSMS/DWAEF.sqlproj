@@ -87,6 +87,7 @@
     </SqlCmdVariable>
   </ItemGroup>
   <ItemGroup>
+	<PreDeploy Include="PreDeployment\PreDeployment.sql" />
     <Build Include="Database Triggers\ChangeLog.sql" />
     <Build Include="Database Triggers\TableTracking.sql" />
     <Build Include="Database Triggers\ViewTracking.sql" />
@@ -168,9 +169,6 @@
     <Build Include="meta\Views\SourceObjectView.sql" />
     <Build Include="meta\Views\BusinessObjectView.sql" />
     <Build Include="meta\User Defined Types\SourceObjectDefinition_Temp.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PreDeploy Include="PreDeployment\PreDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">
