@@ -155,7 +155,7 @@
     <None Include="PreDeployment\Triggers\DisableViewTrigger.sql" />
     <Build Include="meta\Functions\fnWildcard.sql" />
     <Build Include="meta\Functions\ufnFindSection.sql" />
-	<PreDeploy Include="PreDeployment\PreDeployment.sql" />
+    <PreDeploy Include="PreDeployment\PreDeployment.sql" />
     <Build Include="meta\Tables\SourcePartition.sql" />
     <Build Include="meta\Tables\SourceObjectKeyColumn.sql" />
     <Build Include="meta\Tables\SourceObjectFileSetup.sql" />

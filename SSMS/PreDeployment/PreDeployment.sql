@@ -9,6 +9,7 @@
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
+GO
 
 /* Add Extended Properties */
 :r .\ExtendedProperties\DatabaseExtendedProperties.sql

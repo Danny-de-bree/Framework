@@ -31,4 +31,4 @@ BEGIN
 
 	SET @Counter = @Counter + 1;
 
-END
+END;
