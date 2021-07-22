@@ -721,9 +721,9 @@ BEGIN
 		EXEC dbo.spLog @subsystem = 'DW', @source = @PackageName, @type = 'Error', @severity = 1, @message = @message, @entity = @DestinationTableName;
 	END CATCH;
 
-	IF (@Emulation = 0) AND (OBJECT_ID('dbo.BusinessObjectExecutionPlan') IS NOT NULL)
+	IF (@Emulation = 0) AND (OBJECT_ID('meta.BusinessObjectExecutionPlan') IS NOT NULL)
 	BEGIN
-		/* Update dbo.BusinessObjectExecutionPlan set ExecutionStatus = 'Finished' */
+		/* Update meta.BusinessObjectExecutionPlan set ExecutionStatus = 'Finished' */
 		UPDATE [TARGET] WITH (TABLOCKX) SET 
 			[TARGET].[ExecutionStatusCode] = 0
 		FROM meta.BusinessObjectExecutionPlan AS [TARGET]
