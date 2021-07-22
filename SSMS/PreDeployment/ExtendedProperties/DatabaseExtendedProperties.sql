@@ -99,7 +99,7 @@ EXEC sys.sp_AddExtendedProperty 'DWSurrogateKeySuffix'				, 'ID';
 EXEC sys.sp_AddExtendedProperty 'DWFactPrefix'						, 'Fact';
 EXEC sys.sp_AddExtendedProperty 'DWExtractStagingSchemaName'		, 'DSA';
 EXEC sys.sp_AddExtendedProperty 'DWExtractDWSchemaName'				, 'ODS';
-EXEC sys.sp_AddExtendedProperty 'DWExtractHistorySchemaName'		, 'HIST';
+EXEC sys.sp_AddExtendedProperty 'DWExtractHistorySchemaName'		, 'History';
 EXEC sys.sp_AddExtendedProperty 'DWTransformStagingSchemaName'		, 'Stage';
 EXEC sys.sp_AddExtendedProperty 'DWTransformDWSchemaName'			, 'EDW';
 EXEC sys.sp_AddExtendedProperty 'DWTransformDMSchemaName'			, 'DM';
