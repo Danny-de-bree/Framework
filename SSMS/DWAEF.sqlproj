@@ -87,7 +87,6 @@
     </SqlCmdVariable>
   </ItemGroup>
   <ItemGroup>
-	<PreDeploy Include="PreDeployment\PreDeployment.sql" />
     <Build Include="Database Triggers\ChangeLog.sql" />
     <Build Include="Database Triggers\TableTracking.sql" />
     <Build Include="Database Triggers\ViewTracking.sql" />
@@ -150,12 +149,13 @@
     <Build Include="PreDeployment\Schemas\MODEL.sql" />
     <Build Include="PreDeployment\Schemas\SSIS.sql" />
     <Build Include="PreDeployment\Schemas\TEMP.sql" />
+    <None Include="PreDeployment\ExtendedProperties\DatabaseExtendedProperties.sql" />
+    <None Include="PreDeployment\Schemas\DataWarehouseSchemas.sql" />
     <None Include="PreDeployment\Triggers\DisableTableTrigger.sql" />
     <None Include="PreDeployment\Triggers\DisableViewTrigger.sql" />
-    <None Include="PreDeployment\Schemas\DataWarehouseSchemas.sql" />
     <Build Include="meta\Functions\fnWildcard.sql" />
     <Build Include="meta\Functions\ufnFindSection.sql" />
-    <None Include="PreDeployment\ExtendedProperties\DatabaseExtendedProperties.sql" />
+	<PreDeploy Include="PreDeployment\PreDeployment.sql" />
     <Build Include="meta\Tables\SourcePartition.sql" />
     <Build Include="meta\Tables\SourceObjectKeyColumn.sql" />
     <Build Include="meta\Tables\SourceObjectFileSetup.sql" />
