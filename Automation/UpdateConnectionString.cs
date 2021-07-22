@@ -1,0 +1,1 @@
+(Model.DataSources[0] as ProviderDataSource).ConnectionString = "|ConnectionString|";

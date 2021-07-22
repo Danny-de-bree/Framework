@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW [meta].[SourceObjectView]
+﻿CREATE VIEW [meta].[SourceObjectView]
 AS
 WITH cte_so AS (
 	SELECT 
