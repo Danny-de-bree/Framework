@@ -63,7 +63,6 @@
     <Folder Include="dbo\Functions" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="dbo\Tables" />
-    <Folder Include="dbo\User Defined Types" />
     <Folder Include="meta" />
     <Folder Include="meta\Functions" />
     <Folder Include="meta\Stored Procedures" />

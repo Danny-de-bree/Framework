@@ -77,7 +77,7 @@ BEGIN
 	END;
 
 	/* Udate definition and remove blank lines */
-	SET @Definition = REPLACE(TRIM(@definition), CHAR(10) + CHAR(13), '') 
+	SET @Definition = REPLACE(TRIM(@definition), CHAR(13) + CHAR(13), '') 
 	
 	/* you can now search this without false positives from comments. */
 
@@ -252,22 +252,7 @@ BEGIN
 		SET @tokenCnt = @tokenCnt + 1;
 
 		DELETE @tokenList;
-/*
-		IF (@tokenCnt = 1)
-		BEGIN
-			INSERT INTO @tokenList(SortOrder, Token, TypeId, Type) VALUES
-				(102, 'FROM [ARCHIVE].',   102, 'ARCHIVE');
-		END
-		ELSE IF (@tokenCnt = 2)
-		BEGIN
-			INSERT INTO @tokenList(SortOrder, Token, TypeId, Type) VALUES
-				(103, 'FROM [HISTORY].',   103, 'HISTORY');
-		END
-		ELSE BEGIN
-			INSERT INTO @tokenList(SortOrder, Token, TypeId, Type) VALUES
-				(104, 'FROM [UNKNOWN].',   104, 'UNKNOWN');
-		END;
-*/
+
 		SET @wrkDefinition = @Definition;
 		SET @loopCnt = 0;
 		SET @startPos = 0;
@@ -332,7 +317,7 @@ BEGIN
 	END;
 	-- END: Now lets us find the logical stuff except meta
 
-	-- BEGIN: The meta logical block is special
+	-- BEGIN: The model logical block is special
 	SET @startPos = (SELECT TOP 1 r.StartPos FROM @Result AS r ORDER BY r.StartPos);
 	SET @endPos = (SELECT TOP 1 r.StartPos FROM @Result AS r WHERE (r.TypeId >= 100) ORDER BY r.StartPos);
 
@@ -348,9 +333,9 @@ BEGIN
 
 		SET @len = @endPos - @startPos + 1
 
-		INSERT INTO @Result(TypeId, Type, StartPos, EndPos, Definition) VALUES(101, 'meta', @startPos, @endPos, SUBSTRING(@Definition, @startPos, @len));
+		INSERT INTO @Result(TypeId, Type, StartPos, EndPos, Definition) VALUES(101, 'model', @startPos, @endPos, SUBSTRING(@Definition, @startPos, @len));
 	END;
-	-- END: The meta logical block is special
+	-- END: The model logical block is special
 
 	-- Now lets us link the technical sections into the logical sections
 	UPDATE r
@@ -362,14 +347,14 @@ BEGIN
 		AND (r.StartPos >= s.StartPos)
 		AND (r.EndPos <= s.EndPos);
 
-	-- What is left will attached to the meta section
+	-- What is left will attached to the model section
 	UPDATE r
 	SET r.LogicalId = s.Id
 	FROM @Result AS r
 	CROSS JOIN @Result AS s
 	WHERE (r.TypeId < 100)
 		AND (r.LogicalId IS NULL)
-		AND (s.Type = 'meta');
+		AND (s.Type = 'model');
 
 	-- Let us split the output fields
 	DECLARE outputC CURSOR FOR
