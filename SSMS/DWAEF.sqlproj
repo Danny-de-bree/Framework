@@ -151,7 +151,6 @@
     <Build Include="PreDeployment\Schemas\TEMP.sql" />
     <None Include="PreDeployment\Triggers\DisableTableTrigger.sql" />
     <None Include="PreDeployment\Triggers\DisableViewTrigger.sql" />
-    <PreDeploy Include="PreDeployment\PreDeployment.sql" />
     <None Include="PreDeployment\Schemas\DataWarehouseSchemas.sql" />
     <Build Include="meta\Functions\fnWildcard.sql" />
     <Build Include="meta\Functions\ufnFindSection.sql" />
@@ -169,6 +168,9 @@
     <Build Include="meta\Views\SourceObjectView.sql" />
     <Build Include="meta\Views\BusinessObjectView.sql" />
     <Build Include="meta\User Defined Types\SourceObjectDefinition_Temp.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="PreDeployment\PreDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">

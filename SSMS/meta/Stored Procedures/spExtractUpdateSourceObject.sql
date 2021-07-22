@@ -338,16 +338,6 @@ BEGIN
 				SET @stmt = ISNULL(@stmt, '');
 				EXEC sys.sp_executesql @stmt;
 
-				/* Rebuild (Non)Clustered Index */
-				SET @stmt = NULL;
-				SELECT @stmt = ISNULL(@stmt, '') + 'ALTER INDEX ' + QUOTENAME(i.name) + ' ON ' + QUOTENAME(@DWExtractDWSchemaName) + '.' + QUOTENAME(@DestinationTableName) + ' REBUILD WITH (ONLINE = OFF);' + CHAR(10)
-				FROM sys.dm_db_index_physical_stats (DB_ID(), OBJECT_ID(@DWExtractDWSchemaName + '.' + @DestinationTableName), NULL, NULL, NULL) AS ips
-				JOIN sys.indexes AS i WITH (NOLOCK) ON (ips.object_id = i.object_id) AND (ips.index_id = i.index_id)
-				WHERE (i.type IN (1, 2)) AND (ips.avg_fragmentation_in_percent > @IndexFragmentationLimit)
-				
-				SET @stmt = ISNULL(@stmt, '');
-				EXEC sys.sp_executesql @stmt;
-
 				/* Update statistics */
 				IF (@stmt IS NOT NULL) AND (@stmt <> '')
 				BEGIN
@@ -533,16 +523,6 @@ BEGIN
 				) AS ix
 				WHERE ix.IndexFragmentation > @IndexFragmentationLimit
 			)
-			SET @stmt = ISNULL(@stmt, '');
-			EXEC sys.sp_executesql @stmt;
-
-			/* Rebuild (Non)Clustered Index */
-			SET @stmt = NULL;
-			SELECT @stmt = ISNULL(@stmt, '') + 'ALTER INDEX ' + QUOTENAME(i.name) + ' ON ' + QUOTENAME(@DWExtractHistorySchemaName) + '.' + QUOTENAME(@DestinationTableName) + ' REBUILD WITH (ONLINE = OFF);' + CHAR(10)
-			FROM sys.dm_db_index_physical_stats (DB_ID(), OBJECT_ID(@DWExtractHistorySchemaName + '.' + @DestinationTableName), NULL, NULL, NULL) AS ips
-			JOIN sys.indexes AS i WITH (NOLOCK) ON (ips.object_id = i.object_id) AND (ips.index_id = i.index_id)
-			WHERE (i.type IN (1, 2)) AND (ips.avg_fragmentation_in_percent > @IndexFragmentationLimit)
-			
 			SET @stmt = ISNULL(@stmt, '');
 			EXEC sys.sp_executesql @stmt;
 
