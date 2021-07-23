@@ -168,6 +168,7 @@
     <Build Include="meta\Views\SourceObjectView.sql" />
     <Build Include="meta\Views\BusinessObjectView.sql" />
     <Build Include="meta\User Defined Types\SourceObjectDefinition_Temp.sql" />
+    <Build Include="meta\Stored Procedures\spMaintainObject.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">
@@ -182,5 +183,9 @@
     <None Include="bin\Debug\master.dacpac" />
     <None Include="bin\Debug\SSMS.dll" />
     <None Include="bin\Debug\SSMS.pdb" />
+    <None Include="DWAEF.dbmdl" />
+    <None Include="DWAEF.jfm" />
+    <None Include="DWAEF.sqlproj.user" />
+    <None Include="Framework.sln" />
   </ItemGroup>
 </Project>
