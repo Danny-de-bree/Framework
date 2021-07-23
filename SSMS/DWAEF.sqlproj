@@ -131,7 +131,6 @@
     <Build Include="meta\Stored Procedures\spLoadSourceObjectDefinition.sql" />
     <Build Include="meta\Stored Procedures\spLookUpLoadSequence.sql" />
     <Build Include="meta\Stored Procedures\spLookupSourceObject.sql" />
-    <Build Include="meta\Stored Procedures\spMaintainSourceObject.sql" />
     <Build Include="meta\Stored Procedures\spSSASLookupTabularObject.sql" />
     <Build Include="meta\Stored Procedures\spTransformGenerateExecutionPlan.sql" />
     <Build Include="meta\Stored Procedures\spTransformLoadDimension.sql" />

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [meta].[spMaintainSourceObject]
+﻿CREATE PROCEDURE [meta].[spMaintainObject]
 
 	@SourceSchema NVARCHAR(255)
 ,	@DestinationSchema NVARCHAR(255)
@@ -154,7 +154,7 @@ BEGIN
 		END ELSE
 
 		/* Check if table is Data Warehouse layer and column does not exists in source */
-		IF (COL_LENGTH(@SourceSchema + '.' + @DestinationTable, @ColumnName)) IS NULL
+		IF (COL_LENGTH(@SourceSchema + '.' + @DestinationTable, @ColumnName) IS NULL) AND (@PreserveSCD2History = 0)
 		BEGIN
 			
 			SET @stmt = @stmt + 'ALTER TABLE ' + QUOTENAME(@DestinationSchema) + '.' + QUOTENAME(@DestinationTable) + ' DROP COLUMN ' + QUOTENAME(@ColumnName) + '; ' + CHAR(10)

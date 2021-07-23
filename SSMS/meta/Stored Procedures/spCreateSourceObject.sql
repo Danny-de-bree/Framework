@@ -299,7 +299,7 @@ BEGIN
 						UPDATE meta.SourceObject SET IsReset = 0 WHERE (SourceObjectID = @SourceObjectID);
 
 						/* Run maintenance of Data Warehouse table apply schema changes */
-						EXEC meta.spMaintainSourceObject @DWSourceObjectSchema, @SourceObjectSchema, @SourceObjectTable, @emulation;
+						EXEC meta.spMaintainObject @DWSourceObjectSchema, @SourceObjectSchema, @SourceObjectTable, @emulation;
 
 					END;
 				END;

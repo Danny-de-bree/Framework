@@ -317,7 +317,7 @@ BEGIN
 					IF (@DWDestinationSchemaName IN (@DWTransformStagingSchemaName)) 
 					BEGIN 
 						/* Run maintenance of Data Warehouse table apply schema changes */
-						EXEC meta.spMaintainSourceObject @DWTransformStagingSchemaName, @BusinessObjectSchema, @BusinessObjectName, @emulation;
+						EXEC meta.spMaintainObject @DWTransformStagingSchemaName, @BusinessObjectSchema, @BusinessObjectName, @emulation;
 					END;
 
 				END;
