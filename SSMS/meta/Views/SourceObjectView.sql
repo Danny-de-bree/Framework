@@ -28,7 +28,7 @@ WITH cte_so AS (
 	GROUP BY s.name, o.name
 )
 
-SELECT
+SELECT TOP 10000
 	[DataWarehouseLayer]		=	[DataWarehouseLayer]
 ,	[DestinationSchemaName]		=	[DestinationSchemaName]		
 ,	[DestinationTableName]		=	[DestinationTableName]
@@ -58,3 +58,4 @@ CROSS APPLY (
 	WHERE (ep.class = 0) AND (ep.name = 'DefaultMaxDop')
 ) AS ep
 WHERE (so.DataWarehouseLayer = 'Source')
+ORDER BY 2,3
