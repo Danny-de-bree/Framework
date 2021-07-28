@@ -71,7 +71,7 @@ BEGIN
 	SELECT
 		@SourceObjectSchema				= MAX(CASE WHEN [name] = 'SourceObjectSchema'				THEN CONVERT(NVARCHAR(255), [value]) ELSE '' END)
 	,	@SourceObjectName				= MAX(CASE WHEN [name] = 'SourceObjectName'					THEN CONVERT(NVARCHAR(255), [value]) ELSE '' END)
-	,	@SourceObjectLookupKey			= MAX(CASE WHEN [name] = 'SourceObjectLookupKey'			THEN CONVERT(NVARCHAR(255), [value]) ELSE '' END)
+	,	@SourceObjectLookupKey			= MAX(CASE WHEN [name] = 'BusinessObjectLookupKey'			THEN CONVERT(NVARCHAR(255), [value]) ELSE '' END)
 	,	@IncrementalField				= MAX(CASE WHEN [name] = 'IncrementalField'					THEN CONVERT(NVARCHAR(255), [value]) ELSE '' END)
 	,	@JobLoadModeETL					= MAX(CASE WHEN [name] = 'LoadModeETL'						THEN CONVERT(NVARCHAR(255), [value]) ELSE '' END)
 	,	@JobIsReset						= MAX(CASE WHEN [name] = 'IsReset'							THEN CONVERT(TINYINT,		[value]) ELSE 0 END)
