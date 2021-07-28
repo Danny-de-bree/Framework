@@ -245,9 +245,27 @@ BEGIN
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''PreserveSCD2History'', @value = ' + CAST(so.PreserveSCD2History AS nvarchar) + '; ' + CHAR(10) +
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''IncrementalOffSet'', @value = ' + CAST(so.IncrementalOffSet AS nvarchar) + '; ' + CHAR(10) +
 								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''SourceObjectFilter'', @value = N''' + REPLACE(so.SourceObjectFilter, '''', '''''') + '''; ' + CHAR(10) +
-								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''IsEnabled'', @value = ' + CAST(so.IsEnabled AS nvarchar) + '; ' + CHAR(10)
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''IsEnabled'', @value = ' + CAST(so.IsEnabled AS nvarchar) + '; ' + CHAR(10) +
+							CASE
+								
+								/* Add additional extended properties to source object with file setup */
+								WHEN sofs.SourceObjectID IS NOT NULL THEN 
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''LoopFileFlag'', @value = ' + CAST(sofs.LoopFileFlag AS nvarchar) + '; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''FileSystem'', @value = N''' + sofs.FileSystem + '''; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''Folder'', @value = N''' + sofs.Folder + '''; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''FileName'', @value = N''' + sofs.FileName + '''; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''FileExtension'', @value = N''' + sofs.FileExtension + '''; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''RowSeparator'', @value = N''' + sofs.RowSeparator + '''; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''ColumnDelimiter'', @value = N''' + sofs.ColumnDelimiter + '''; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''TextQualifier'', @value = N''' + sofs.TextQualifier	+ '''; ' + CHAR(10) +
+								'EXEC sys.sp_AddExtendedProperty @level0type = N''SCHEMA'', @level0name = N''' + sc.SourceConnectionSchema + ''', @level1type = N''TABLE'', @level1name = N''' + so.SourceObjectTable + ''', @name = N''IsHeaderPresent'', @value = ' +	CAST(sofs.IsHeaderPresent  AS nvarchar) + '; ' + CHAR(10)
+				
+								ELSE ''
+							END
+
 							FROM meta.SourceObject AS so WITH (NOLOCK)
 							INNER JOIN meta.SourceConnection AS sc WITH (NOLOCK) ON (so.SourceConnectionID = sc.SourceConnectionID)
+							LEFT JOIN meta.SourceObjectFileSetup AS sofs WITH (NOLOCK) ON (so.SourceObjectID = sofs.SourceObjectID)
 							WHERE (so.SourceObjectID = @SourceObjectID)
 						)
 					ELSE ''
