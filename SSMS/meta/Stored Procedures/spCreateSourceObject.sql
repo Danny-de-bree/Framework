@@ -80,7 +80,7 @@ BEGIN
 		IF (SCHEMA_ID(@SourceObjectSchema) IS NULL) 
 		BEGIN
 			SELECT @stmt =
-				'EXEC (''CREATE SCHEMA ' + QUOTENAME(@SourceObjectSchema) + ' AUTHORIZATION [meta];'');' + CHAR(13) + CHAR(10) + CHAR(10) +
+				'EXEC (''CREATE SCHEMA ' + QUOTENAME(@SourceObjectSchema) + ' AUTHORIZATION [dbo];'');' + CHAR(13) + CHAR(10) + CHAR(10) +
 				
 					/* Only add extended properties to source connection schema */
 					CASE WHEN (@DWDestinationSchemaName NOT IN (@DWExtractDWSchemaName, @DWExtractHistorySchemaName))
