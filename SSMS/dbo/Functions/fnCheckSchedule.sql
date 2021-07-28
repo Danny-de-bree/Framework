@@ -71,7 +71,7 @@ BEGIN
 				-- 1) Daily: More than one day since executed 
 				IF (@periodToken = 'Daily')
 				BEGIN
-					IF (GETDATE() > DATEADD(DAY, 1, @lastExecuted))
+					IF (GETUTCDATE() > DATEADD(DAY, 1, @lastExecuted))
 					BEGIN
 						SET @scheduleOK = 1;
 					END;
@@ -79,7 +79,7 @@ BEGIN
 				-- 11) Hourly: More than one hour since executed
 				ELSE IF (@periodToken = 'Hourly')
 				BEGIN
-					IF (GETDATE() > DATEADD(HOUR, 1, @lastExecuted))
+					IF (GETUTCDATE() > DATEADD(HOUR, 1, @lastExecuted))
 					BEGIN
 						SET @scheduleOK = 1;
 					END;
@@ -121,14 +121,14 @@ BEGIN
 
 						IF (@fromHour IS NOT NULL) AND (@fromMinute IS NOT NULL)
 						BEGIN
-							IF (GETDATE() > DATEADD(DAY, 1, @lastExecuted))
+							IF (GETUTCDATE() > DATEADD(DAY, 1, @lastExecuted))
 							BEGIN
 								IF (
-									(DATEPART(HOUR, GETDATE()) = @fromHour)
-									AND (DATEPART(MINUTE, GETDATE()) > @fromMinute)
+									(DATEPART(HOUR, GETUTCDATE()) = @fromHour)
+									AND (DATEPART(MINUTE, GETUTCDATE()) > @fromMinute)
 								)
 								OR (
-									(DATEPART(HOUR, GETDATE()) > @fromHour)
+									(DATEPART(HOUR, GETUTCDATE()) > @fromHour)
 								)
 								BEGIN
 									SET @scheduleOK = 1;
@@ -152,9 +152,9 @@ BEGIN
 
 					IF (@fromMinute IS NOT NULL)
 					BEGIN
-						IF (GETDATE() > DATEADD(HOUR, 1, @lastExecuted))
+						IF (GETUTCDATE() > DATEADD(HOUR, 1, @lastExecuted))
 						BEGIN
-							IF (DATEPART(MINUTE, GETDATE()) > @fromMinute)
+							IF (DATEPART(MINUTE, GETUTCDATE()) > @fromMinute)
 							BEGIN
 								SET @scheduleOK = 1;
 							END;
@@ -198,14 +198,14 @@ BEGIN
 
 						IF (@toHour IS NOT NULL) AND (@toMinute IS NOT NULL)
 						BEGIN
-							IF (GETDATE() > DATEADD(DAY, 1, @lastExecuted))
+							IF (GETUTCDATE() > DATEADD(DAY, 1, @lastExecuted))
 							BEGIN
 								IF (
-									(DATEPART(HOUR, GETDATE()) = @toHour)
-									AND (DATEPART(MINUTE, GETDATE()) < @toMinute)
+									(DATEPART(HOUR, GETUTCDATE()) = @toHour)
+									AND (DATEPART(MINUTE, GETUTCDATE()) < @toMinute)
 								)
 								OR (
-									(DATEPART(HOUR, GETDATE()) < @toHour)
+									(DATEPART(HOUR, GETUTCDATE()) < @toHour)
 								)
 								BEGIN
 									SET @scheduleOK = 1;
@@ -229,9 +229,9 @@ BEGIN
 
 					IF (@toMinute IS NOT NULL)
 					BEGIN
-						IF (GETDATE() > DATEADD(HOUR, 1, @lastExecuted))
+						IF (GETUTCDATE() > DATEADD(HOUR, 1, @lastExecuted))
 						BEGIN
-							IF (DATEPART(MINUTE, GETDATE()) < @toMinute)
+							IF (DATEPART(MINUTE, GETUTCDATE()) < @toMinute)
 							BEGIN
 								SET @scheduleOK = 1;
 							END;
@@ -316,24 +316,24 @@ BEGIN
 								-- 4) Daily Between 22:10 and 22:50: More than one day since executed and current time >= 22:10 and current time <= 22:50
 								IF (@fromHour < @toHour) OR ((@fromHour = @toHour) AND (@fromMinute < @toMinute))
 								BEGIN
-									IF (GETDATE() > DATEADD(DAY, 1, @lastExecuted))
+									IF (GETUTCDATE() > DATEADD(DAY, 1, @lastExecuted))
 									BEGIN
 										IF (
 											(
-												(DATEPART(HOUR, GETDATE()) = @fromHour)
-												AND (DATEPART(MINUTE, GETDATE()) >= @fromMinute)
+												(DATEPART(HOUR, GETUTCDATE()) = @fromHour)
+												AND (DATEPART(MINUTE, GETUTCDATE()) >= @fromMinute)
 											)
 											OR (
-												(DATEPART(HOUR, GETDATE()) > @fromHour)
+												(DATEPART(HOUR, GETUTCDATE()) > @fromHour)
 											)
 										)
 										AND (
 											(
-												(DATEPART(HOUR, GETDATE()) = @toHour)
-												AND (DATEPART(MINUTE, GETDATE()) <= @toMinute)
+												(DATEPART(HOUR, GETUTCDATE()) = @toHour)
+												AND (DATEPART(MINUTE, GETUTCDATE()) <= @toMinute)
 											)
 											OR (
-												(DATEPART(HOUR, GETDATE()) <= @toHour)
+												(DATEPART(HOUR, GETUTCDATE()) <= @toHour)
 											)
 										)
 										BEGIN
@@ -343,24 +343,24 @@ BEGIN
 								END
 								-- 5) Daily Between 23:00 and 01:00: More than one day since executed and current time >= 23:00 and current time <= 01:00 (next day)
 								ELSE BEGIN
-									IF (GETDATE() > DATEADD(DAY, 1, @lastExecuted))
+									IF (GETUTCDATE() > DATEADD(DAY, 1, @lastExecuted))
 									BEGIN
 										IF (
 											(
-												(DATEPART(HOUR, GETDATE()) = @fromHour)
-												AND (DATEPART(MINUTE, GETDATE()) >= @fromMinute)
+												(DATEPART(HOUR, GETUTCDATE()) = @fromHour)
+												AND (DATEPART(MINUTE, GETUTCDATE()) >= @fromMinute)
 											)
 											OR (
-												(DATEPART(HOUR, GETDATE()) > @fromHour)
+												(DATEPART(HOUR, GETUTCDATE()) > @fromHour)
 											)
 										)
 										OR (
 											(
-												(DATEPART(HOUR, GETDATE()) = @toHour)
-												AND (DATEPART(MINUTE, GETDATE()) <= @toMinute)
+												(DATEPART(HOUR, GETUTCDATE()) = @toHour)
+												AND (DATEPART(MINUTE, GETUTCDATE()) <= @toMinute)
 											)
 											OR (
-												(DATEPART(HOUR, GETDATE()) < @toHour)
+												(DATEPART(HOUR, GETUTCDATE()) < @toHour)
 											)
 										)
 										BEGIN
@@ -400,10 +400,10 @@ BEGIN
 							-- 14) Hourly Between 10 and 50: More than one hour since executed and current minute >= 10 and current time <= 50
 							IF (@fromMinute < @toMinute)
 							BEGIN
-								IF (GETDATE() > DATEADD(HOUR, 1, @lastExecuted))
+								IF (GETUTCDATE() > DATEADD(HOUR, 1, @lastExecuted))
 								BEGIN
-									IF (DATEPART(MINUTE, GETDATE()) >= @fromMinute)
-										AND (DATEPART(MINUTE, GETDATE()) <= @toMinute)
+									IF (DATEPART(MINUTE, GETUTCDATE()) >= @fromMinute)
+										AND (DATEPART(MINUTE, GETUTCDATE()) <= @toMinute)
 									BEGIN
 										SET @scheduleOK = 1;
 									END;
@@ -411,11 +411,11 @@ BEGIN
 							END
 							-- 15) Hourly Between 50 and 10: More than one hour since executed and current minute >= 50 and current minute <= 10 (next hour)
 							ELSE BEGIN
-								IF (GETDATE() > DATEADD(HOUR, 1, @lastExecuted))
+								IF (GETUTCDATE() > DATEADD(HOUR, 1, @lastExecuted))
 								BEGIN
 									IF (
-										(DATEPART(MINUTE, GETDATE()) >= @fromMinute)
-										OR (DATEPART(MINUTE, GETDATE()) <= @toMinute)
+										(DATEPART(MINUTE, GETUTCDATE()) >= @fromMinute)
+										OR (DATEPART(MINUTE, GETUTCDATE()) <= @toMinute)
 									)
 									BEGIN
 										SET @scheduleOK = 1;
@@ -449,7 +449,7 @@ BEGIN
 
 				IF (@quantifier IS NOT NULL)
 				BEGIN
-					IF (DATEDIFF(MINUTE, @lastExecuted, GETDATE()) >= @quantifier)
+					IF (DATEDIFF(MINUTE, @lastExecuted, GETUTCDATE()) >= @quantifier)
 					BEGIN
 						SET @scheduleOK = 1;
 					END;
@@ -470,7 +470,7 @@ BEGIN
 
 				IF (@quantifier IS NOT NULL)
 				BEGIN
-					IF (DATEDIFF(HOUR, @lastExecuted, GETDATE()) >= @quantifier)
+					IF (DATEDIFF(HOUR, @lastExecuted, GETUTCDATE()) >= @quantifier)
 					BEGIN
 						SET @scheduleOK = 1;
 					END;

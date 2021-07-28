@@ -124,7 +124,6 @@
     <Build Include="meta\Stored Procedures\spBuildLoadComplexFromView.sql" />
     <Build Include="meta\Stored Procedures\spCreateBusinessObject.sql" />
     <Build Include="meta\Stored Procedures\spCreateSourceObject.sql" />
-    <Build Include="meta\Stored Procedures\spDropSourceObject.sql" />
     <Build Include="meta\Stored Procedures\spExtractCreateSelectCommand.sql" />
     <Build Include="meta\Stored Procedures\spExtractUpdateSourceObject.sql" />
     <Build Include="meta\Stored Procedures\spGetExtendedProperties.sql" />

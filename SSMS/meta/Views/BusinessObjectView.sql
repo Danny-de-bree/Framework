@@ -30,7 +30,7 @@ cte_bo AS (
 	GROUP BY s.name, o.name
 )
 
-SELECT 
+SELECT TOP 10000
 	[DataWarehouseLayer]		=	[DataWarehouseLayer]		
 ,	[BusinessObjectSchema]		=	[BusinessObjectSchema]		
 ,	[BusinessObjectName]		=	[BusinessObjectName]		
@@ -49,3 +49,4 @@ SELECT
 ,	[IsEnabled]					=	[IsEnabled]					
 FROM cte_bo AS bo
 CROSS APPLY dbo.fnCheckSchedule(bo.BusinessObjectSchedule, bo.LastProcessingDate) AS x
+ORDER BY 2,3
