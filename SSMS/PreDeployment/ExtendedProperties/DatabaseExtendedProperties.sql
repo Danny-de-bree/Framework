@@ -103,7 +103,7 @@ EXEC sys.sp_AddExtendedProperty 'DWExtractHistorySchemaName'		, 'History';
 EXEC sys.sp_AddExtendedProperty 'DWTransformStagingSchemaName'		, 'Stage';
 EXEC sys.sp_AddExtendedProperty 'DWTransformDWSchemaName'			, 'EDW';
 EXEC sys.sp_AddExtendedProperty 'DWTransformDMSchemaName'			, 'DM';
-EXEC sys.sp_AddExtendedProperty 'DWTransformSchemaName'				, 'TRANSFORM';
+EXEC sys.sp_AddExtendedProperty 'DWTransformSchemaName'				, 'Transform';
 EXEC sys.sp_AddExtendedProperty 'DWLogLevel'						, 'Info,Warning';
 EXEC sys.sp_AddExtendedProperty 'EnableAutoPartition'				, 0;
 EXEC sys.sp_AddExtendedProperty 'ETLLogLevel'						, 'Info,Warning';

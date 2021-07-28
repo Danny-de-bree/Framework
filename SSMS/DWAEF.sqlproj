@@ -144,7 +144,6 @@
     <Build Include="SSIS\Stored Procedures\spLoad_ALL_01_LogStartTime.sql" />
     <Build Include="SSIS\Stored Procedures\spLoad_ALL_05_LogStopTime.sql" />
     <Build Include="PreDeployment\Schemas\meta.sql" />
-    <Build Include="PreDeployment\Schemas\MODEL.sql" />
     <Build Include="PreDeployment\Schemas\SSIS.sql" />
     <Build Include="PreDeployment\Schemas\TEMP.sql" />
     <None Include="PreDeployment\ExtendedProperties\DatabaseExtendedProperties.sql" />
