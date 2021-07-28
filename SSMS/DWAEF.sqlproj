@@ -167,6 +167,7 @@
     <Build Include="meta\Views\BusinessObjectView.sql" />
     <Build Include="meta\User Defined Types\SourceObjectDefinition_Temp.sql" />
     <Build Include="meta\Stored Procedures\spMaintainObject.sql" />
+    <Build Include="meta\Tables\SourceConnectionDataTypeMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">
