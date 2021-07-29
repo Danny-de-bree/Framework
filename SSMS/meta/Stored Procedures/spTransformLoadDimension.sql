@@ -175,7 +175,7 @@ BEGIN
 	/* Do we have any changed records ? */
 	IF (@Emulation = 0)
 	BEGIN
-		SET @stmt = 'SELECT @InsertCnt = COUNT(1) FROM ' + QUOTENAME(@DestinationSchemaName) + '.' + QUOTENAME(@DestinationTableName) + ';'
+		SET @stmt = 'SELECT @InsertCnt = COUNT(1) FROM ' + QUOTENAME(@DWTransformStagingSchemaName) + '.' + QUOTENAME(@DestinationTableName) + ';'
 		EXEC sys.sp_executesql @stmt, N'@InsertCnt bigint OUTPUT', @InsertCnt OUTPUT;
 
 		IF (@InsertCnt = 0) SET @StopExecution = 1; 
