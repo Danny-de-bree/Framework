@@ -268,7 +268,7 @@ BEGIN
 		END +
 
 		'/**********************************************************************************************************************************************************************' + CHAR(10) +
-		'	' + IIF(@SqlCteStatement IS NULL OR @SqlCteStatement = '', '2.', '3.') + ' Business Logik - Remember to use the input variable @JobIsReset to distinguish between full and incremental load' + CHAR(10) +	
+		'	' + IIF(@SqlCteStatement IS NULL OR @SqlCteStatement = '', '2.', '3.') + ' Business Logic - Remember to use the input variable @JobIsReset to distinguish between full and incremental load' + CHAR(10) +	
 		'***********************************************************************************************************************************************************************/' + CHAR(10) + CHAR(10) +
 		'	INSERT INTO ' + QUOTENAME(@DestinationSchemaName) + '.' + QUOTENAME(@DestinationTableName) + ' WITH (TABLOCKX) (' + CHAR(10) +
 				@SqlColumns +
